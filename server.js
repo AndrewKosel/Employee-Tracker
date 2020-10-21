@@ -154,7 +154,76 @@ function addEmployee() {
         });
 };
 
+function addDepartment() {
+    inquirer
+        .prompt({
+            name: "department",
+            type: "input",
+            message: "Enter the department you would like to add"
+        })
+        .then(function(answer) {
+            connection.query("INSERT INTO department SET ?", { name: answer.department },
+                function(err) {
+                    if (err) throw err;
+                    console.log("You have added a new department!");
+                    promptUser();
+                }
+            );
+        });
+};
 
+function addRole() {
+    inquirer
+        .prompt([{
+                name: "title",
+                type: "input",
+                message: "Please enter the role's title",
+            },
+
+            {
+                name: "salary",
+                type: "input",
+                message: "Please enter the salary for the role",
+            },
+
+            {
+                name: "department_id",
+                type: "input",
+                message: "Please enter the ID for this department",
+            }
+        ])
+        .then(function(answer) {
+            connection.query("INSERT INTO role SET ?", {
+                    title: answer.title,
+                    salary: answer.salary || 0,
+                    department_id: answer.department_id || 0
+                },
+                function(err) {
+                    if (err) throw err;
+                    console.log("Role Added");
+                    promptUser();
+                }
+            );
+        });
+    h
+};
+
+function removeEmployee() {
+    inquirer
+        .prompt([{
+            name: "id",
+            type: "input",
+            message: "Please enter the Employee id",
+
+        }]).then(function(answer) {
+            connection.query("DELETE FROM employee WHERE id = ?", [answer.id],
+                function(err) {
+                    if (err) throw err;
+                    console.log("You have successfully removed the employee");
+                    promptUser();
+                })
+        })
+}
 
 function exit() {
     console.log("Leaving Dunder Mifflin DB");
