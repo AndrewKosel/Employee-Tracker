@@ -225,6 +225,39 @@ function removeEmployee() {
         })
 }
 
+updateRole = () => {
+    connection.query("SELECT * FROM employee", function(err, res) {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: "updateRole",
+                type: "list",
+                message: "Which employee do you want to make changes to",
+                choices: function() {
+                    var inputArray = [];
+                    for (var i = 0; i < res.length; i++) {
+                        inputArray.push(res[i].last_name);
+                    }
+                    return inputArray;
+                }
+            }])
+            .then(function(answer) {
+                inquirer
+                    .prompt([{
+                        name: "changeRole",
+                        type: "input",
+                        message: "What do you want the new employees role to be"
+                    }, ])
+                    .then(function(roleAnswer) {
+                        connection.query("UPDATE employee SET role_id = ? WHERE last_name = ?", [roleAnswer.changeRole, answer.updateRole]);
+                        console.log("You have successfully updated  the employee");
+                        promptUser();
+                    })
+
+            });
+    })
+};
+
 function exit() {
     console.log("Leaving Dunder Mifflin DB");
     connection.end();
