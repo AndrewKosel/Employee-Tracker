@@ -36,6 +36,7 @@ function promptUser() {
                 "Add Department",
                 "Update Employee",
                 "Remove Employee",
+                "View Managers",
                 "Exit",
             ]
         })
@@ -73,8 +74,11 @@ function promptUser() {
                 addDepartment();
             }
 
+            if (choices === "View Managers") {
+                viewManager();
+            }
             if (choices === "Exit") {
-                connection.end();
+                exit();
             }
         });
 };
@@ -103,35 +107,35 @@ function viewRole() {
     });
 }
 
-// function viewManager() {
-//     connection.query("SELECT * FROM role", function(err, res) {
-//         if (err) throw err;
-//         console.table(res);
-//         promptUser();
-//     });
-// }
+function viewManager() {
+    connection.query("SELECT * FROM role", function(err, res) {
+        if (err) throw err;
+        console.table(res);
+        promptUser();
+    });
+}
 
 function addEmployee() {
     inquirer
         .prompt([{
                 name: "first_name",
                 type: "input",
-                message: "Enter the employee's first name",
+                message: "Enter first name of employee",
             },
             {
                 name: "last_name",
                 type: "input",
-                message: "Enter the employee's last name",
+                message: "Enter last name of employee",
             },
             {
                 name: "role_id",
                 type: "input",
-                message: "Enter the employee's role id",
+                message: "Enter employee's role id",
             },
             {
                 name: "manager_id",
                 type: "input",
-                message: "Enter the employee's manager id",
+                message: "Enter employee's manager id",
             }
         ])
         .then(function(answer) {
@@ -153,6 +157,6 @@ function addEmployee() {
 
 
 function exit() {
-    console.log("Thank you From Michael Scott");
+    console.log("Leaving Dunder Mifflin DB");
     connection.end();
 }
