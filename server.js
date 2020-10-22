@@ -69,14 +69,10 @@ function promptUser() {
                 updateRole();
             }
 
-
             if (choices === "Add Department") {
                 addDepartment();
             }
 
-            if (choices === "View Managers") {
-                viewManager();
-            }
             if (choices === "Exit") {
                 exit();
             }
@@ -107,13 +103,13 @@ function viewRole() {
     });
 }
 
-function viewManager() {
-    connection.query("SELECT * FROM role", function(err, res) {
-        if (err) throw err;
-        console.table(res);
-        promptUser();
-    });
-}
+// function viewManager() {
+//     connection.query("SELECT * FROM role", function(err, res) {
+//         if (err) throw err;
+//         console.table(res);
+//         promptUser();
+//     });
+// }
 
 function addEmployee() {
     inquirer
@@ -159,7 +155,7 @@ function addDepartment() {
         .prompt({
             name: "department",
             type: "input",
-            message: "Enter the department you would like to add"
+            message: "Enter the department you would like to add",
         })
         .then(function(answer) {
             connection.query("INSERT INTO department SET ?", { name: answer.department },
